@@ -1,0 +1,11 @@
+{
+  "id": "novyx-obsidian",
+  "name": "Novyx",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Persistent AI memory for Obsidian. Your AI remembers across sessions with rollback, audit trails, and Ghost Connections that surface hidden links between notes.",
+  "author": "Novyx Labs",
+  "authorUrl": "https://novyxlabs.com",
+  "fundingUrl": "https://novyxlabs.com/pricing",
+  "isDesktopOnly": false
+}

@@ -1,0 +1,164 @@
+/* Novyx Obsidian Plugin */
+
+.novyx-ghost-view {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-normal);
+}
+
+.novyx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.novyx-header h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.novyx-refresh-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: pointer;
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.novyx-refresh-btn:hover {
+  background: var(--interactive-hover);
+}
+
+.novyx-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 0 12px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.novyx-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 16px 0;
+  line-height: 1.5;
+}
+
+.novyx-empty p {
+  margin: 4px 0;
+}
+
+.novyx-hint {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.novyx-error {
+  color: var(--text-error);
+  font-size: 12px;
+  padding: 8px 10px;
+  background: var(--background-modifier-error);
+  border-radius: 4px;
+}
+
+.novyx-link {
+  color: var(--interactive-accent);
+  text-decoration: underline;
+}
+
+.novyx-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.novyx-result {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  transition: border-color 0.15s ease;
+}
+
+.novyx-result:hover {
+  border-color: var(--interactive-accent);
+}
+
+.novyx-score {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--background-primary);
+  padding: 3px 7px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.novyx-score-mid {
+  color: var(--text-accent);
+}
+
+.novyx-score-high {
+  color: var(--text-success, #4caf50);
+  background: var(--background-modifier-success, rgba(76, 175, 80, 0.1));
+}
+
+.novyx-result-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.novyx-result-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--interactive-accent);
+  margin-bottom: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.novyx-result-title:hover {
+  text-decoration: underline;
+}
+
+.novyx-result-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.novyx-result-actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+}
+
+.novyx-action-btn {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.novyx-action-btn:hover {
+  color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+}

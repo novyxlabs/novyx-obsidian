@@ -1,0 +1,9 @@
+node_modules
+main.js
+*.log
+.DS_Store
+.idea
+.vscode
+.env
+.env.local
+data.json

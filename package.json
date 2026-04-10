@@ -1,0 +1,44 @@
+{
+  "name": "novyx-obsidian",
+  "version": "0.1.0",
+  "description": "Persistent AI memory for Obsidian — powered by Novyx Core",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "version": "node version-bump.mjs && git add manifest.json versions.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novyxlabs/novyx-obsidian.git"
+  },
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "ai",
+    "ai-memory",
+    "persistent-memory",
+    "novyx",
+    "knowledge-graph",
+    "second-brain"
+  ],
+  "author": "Novyx Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/novyxlabs/novyx-obsidian/issues"
+  },
+  "homepage": "https://novyxlabs.com",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.20.2",
+    "obsidian": "^1.5.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "novyx": "^3.2.0"
+  }
+}
