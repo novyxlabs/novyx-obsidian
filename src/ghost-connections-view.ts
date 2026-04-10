@@ -63,13 +63,20 @@ export class GhostConnectionsView extends ItemView {
       return;
     }
 
+    // Snapshot the target file at the start of the request. If the user
+    // switches notes before this completes, a later fetchConnections()
+    // will run for the new file — we must not overwrite it with the
+    // stale results from this one.
+    const targetFile = this.currentFile;
+    const targetPath = targetFile.path;
+
     this.loading = true;
     this.lastError = null;
     this.render();
 
     try {
-      const content = await this.app.vault.read(this.currentFile);
-      const query = this.buildQuery(this.currentFile.basename, content);
+      const content = await this.app.vault.read(targetFile);
+      const query = this.buildQuery(targetFile.basename, content);
 
       const memories = await client.ghostConnections(query, {
         limit: this.plugin.settings.ghostLimit,
@@ -77,16 +84,23 @@ export class GhostConnectionsView extends ItemView {
         vaultTag: this.plugin.vaultTagValue(),
       });
 
-      // Filter out the current note's own memory so we don't recommend self-links
-      const currentNoteTag = `note:${this.currentFile.basename}`;
-      this.results = memories.filter((m) => !m.tags.includes(currentNoteTag));
+      // Drop this result set if the user switched notes mid-flight.
+      if (this.currentFile?.path !== targetPath) return;
+
+      // Filter out the current note's own memory so we don't recommend self-links.
+      // Identity is keyed off file.path — basenames collide across folders.
+      const selfTag = `path:${targetPath}`;
+      this.results = memories.filter((m) => !m.tags.includes(selfTag));
     } catch (err) {
+      if (this.currentFile?.path !== targetPath) return;
       console.error("[Novyx] Ghost Connections fetch failed:", err);
       this.lastError = err instanceof Error ? err.message : "Unknown error";
       this.results = [];
     } finally {
-      this.loading = false;
-      this.render();
+      if (this.currentFile?.path === targetPath) {
+        this.loading = false;
+        this.render();
+      }
     }
   }
 
@@ -194,18 +208,28 @@ export class GhostConnectionsView extends ItemView {
     // Body
     const body = item.createEl("div", { cls: "novyx-result-body" });
 
-    // Find note tag if present
-    const noteTag = memory.tags.find((t) => t.startsWith("note:"));
-    const noteName = noteTag ? noteTag.slice(5) : null;
+    // Resolve the note by path (stable) and use its current basename for display.
+    // If the file has been deleted or renamed, the memory is orphaned and we
+    // show a muted "note missing" row instead of a broken link.
+    const pathTag = memory.tags.find((t) => t.startsWith("path:"));
+    const notePath = pathTag ? pathTag.slice(5) : null;
+    const file = notePath ? this.app.vault.getAbstractFileByPath(notePath) : null;
+    const resolvedFile = file instanceof TFile ? file : null;
 
-    if (noteName) {
+    if (resolvedFile) {
       const titleLink = body.createEl("a", {
         cls: "novyx-result-title",
-        text: noteName,
+        text: resolvedFile.basename,
       });
       titleLink.addEventListener("click", (e) => {
         e.preventDefault();
-        this.openNoteByBasename(noteName);
+        void this.app.workspace.getLeaf().openFile(resolvedFile);
+      });
+    } else if (notePath) {
+      // Orphaned memory — the source note was deleted or moved
+      body.createEl("div", {
+        cls: "novyx-result-title novyx-result-orphaned",
+        text: `(source note missing: ${notePath.split("/").pop() ?? notePath})`,
       });
     }
 
@@ -215,33 +239,27 @@ export class GhostConnectionsView extends ItemView {
       text: preview + (memory.observation.length > 180 ? "…" : ""),
     });
 
-    // Insert-as-link button (only if we have a note name)
-    if (noteName) {
+    // Insert-as-link button — only when we have a resolvable file
+    if (resolvedFile) {
       const actionBar = body.createEl("div", { cls: "novyx-result-actions" });
       const linkBtn = actionBar.createEl("button", {
         cls: "novyx-action-btn",
         text: "Insert wiki-link",
       });
-      linkBtn.addEventListener("click", () => this.insertWikiLink(noteName));
+      linkBtn.addEventListener("click", () => this.insertWikiLink(resolvedFile));
     }
   }
 
-  private openNoteByBasename(basename: string): void {
-    const file = this.app.vault.getMarkdownFiles().find((f) => f.basename === basename);
-    if (!file) {
-      new Notice(`Novyx: Note "${basename}" not found in this vault.`);
-      return;
-    }
-    void this.app.workspace.getLeaf().openFile(file);
-  }
-
-  private insertWikiLink(basename: string): void {
+  private insertWikiLink(file: TFile): void {
     const view = this.app.workspace.getActiveViewOfType(MarkdownView);
     if (!view) {
       new Notice("Novyx: Open a note to insert a wiki-link.");
       return;
     }
-    view.editor.replaceSelection(`[[${basename}]]`);
-    new Notice(`Novyx: Inserted [[${basename}]]`);
+    // Use Obsidian's link generator so wiki-links respect vault settings
+    // (short form vs. full path) and disambiguate duplicate basenames.
+    const link = this.app.fileManager.generateMarkdownLink(file, view.file?.path ?? "");
+    view.editor.replaceSelection(link);
+    new Notice(`Novyx: Inserted link to ${file.basename}`);
   }
 }

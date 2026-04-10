@@ -28,15 +28,19 @@ export class NovyxSettingTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName("Novyx API key")
       .setDesc("Your Novyx API key. Stored locally in this vault's plugin settings.")
-      .addText((text) =>
+      .addText((text) => {
         text
           .setPlaceholder("nram_...")
           .setValue(this.plugin.settings.apiKey)
           .onChange(async (value) => {
             this.plugin.settings.apiKey = value.trim();
             await this.plugin.saveSettings();
-          })
-      );
+          });
+        // Mask the input so the key doesn't leak on screen-share / shoulder-surf
+        text.inputEl.type = "password";
+        text.inputEl.autocomplete = "off";
+        text.inputEl.spellcheck = false;
+      });
 
     new Setting(containerEl)
       .setName("API URL")

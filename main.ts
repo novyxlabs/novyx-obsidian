@@ -87,10 +87,15 @@ export default class NovyxPlugin extends Plugin {
       const body = raw.replace(/^---[\s\S]*?---/, "").trim();
       const observation = `${file.basename}\n\n${body}`;
 
+      // Identity tag uses file.path because file.basename is neither unique
+      // (two notes can share a name in different folders) nor the right key
+      // for self-filtering or "open source note" actions. path:... gives us
+      // a stable-within-this-session identifier. Note: renaming a file will
+      // orphan the memory — we document this trade-off in the README.
       await this.client.remember(observation, [
         "obsidian",
         this.vaultTagValue(),
-        `note:${file.basename}`,
+        `path:${file.path}`,
       ]);
 
       new Notice(`Novyx: Remembered "${file.basename}"`);

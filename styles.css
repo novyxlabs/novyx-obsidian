@@ -132,6 +132,17 @@
   text-decoration: underline;
 }
 
+.novyx-result-orphaned {
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+  cursor: default;
+}
+
+.novyx-result-orphaned:hover {
+  text-decoration: none;
+}
+
 .novyx-result-preview {
   font-size: 11px;
   color: var(--text-muted);

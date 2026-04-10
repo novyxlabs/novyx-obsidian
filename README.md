@@ -58,6 +58,12 @@ Novyx is different:
 3. **Memory rollback** (via Vault app) — Undo what the AI learned at any point in time. Cryptographic audit trail for every operation.
 4. **Unified memory** — The same memory layer works across Obsidian, Claude Code, and Cursor via MCP. Your coding context shows up in your notes. Your notes show up in your coding agent.
 
+## Known limitations (v0.1)
+
+- **Rename orphans memories.** Memories are keyed to the note's file path. If you rename or move a note, the old memory stays in Novyx but is no longer linked to the new location. A new "Remember" will create a fresh memory at the new path. Ghost Connections will show the old memory as `(source note missing: ...)` until manually cleaned up. A future version will track renames automatically.
+- **Desktop only.** The plugin is flagged `isDesktopOnly: true` for v0.1 while we verify the Novyx SDK bundle runs cleanly on iOS/Android. Mobile support is on the v0.2 roadmap.
+- **No memory dedupe on re-Remember.** Running "Remember current note" twice on the same note stores two memories. This is intentional for v0.1 — memory history matters. A future version will let you choose between dedupe and versioning.
+
 ## Related
 
 - **[Novyx Vault](https://vault.novyxlabs.com)** — The full Novyx second-brain app (markdown editor, voice capture, knowledge graph, memory rollback UI, governance dashboard). Self-hostable, MIT licensed.
