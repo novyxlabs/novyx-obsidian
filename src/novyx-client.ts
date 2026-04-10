@@ -1,4 +1,4 @@
-import { Novyx } from "novyx";
+import { Novyx, type Memory } from "novyx";
 import type { GhostMemory } from "./types";
 
 /**
@@ -34,8 +34,8 @@ export class NovyxClient {
   /**
    * Find semantically similar memories — the primitive behind "Ghost Connections".
    *
-   * We call recall() with min_score >= 0.6 to surface only meaningful matches,
-   * and filter by the current vault's tag so cross-vault noise doesn't bleed in.
+   * Calls recall() with min_score >= 0.6 to surface only meaningful matches,
+   * and filters by the current vault's tag so cross-vault noise doesn't bleed in.
    */
   async ghostConnections(
     query: string,
@@ -47,19 +47,16 @@ export class NovyxClient {
       tags: [opts.vaultTag],
     });
 
-    const memories = (result as unknown as { memories?: unknown[] })?.memories ?? [];
-    return memories
-      .map((m): GhostMemory | null => {
-        const mem = m as Record<string, unknown>;
-        if (typeof mem.observation !== "string") return null;
-        return {
-          id: String(mem.id ?? mem.uuid ?? ""),
-          observation: mem.observation,
-          score: typeof mem.score === "number" ? mem.score : 0,
-          tags: Array.isArray(mem.tags) ? (mem.tags as string[]) : [],
-          created_at: typeof mem.created_at === "string" ? mem.created_at : undefined,
-        };
-      })
-      .filter((m): m is GhostMemory => m !== null);
+    return result.memories.map((m) => this.toGhostMemory(m));
+  }
+
+  private toGhostMemory(m: Memory): GhostMemory {
+    return {
+      id: m.uuid,
+      observation: m.observation,
+      score: m.score ?? m.similarity ?? 0,
+      tags: m.tags,
+      created_at: m.created_at,
+    };
   }
 }
