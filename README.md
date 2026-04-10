@@ -44,7 +44,7 @@ Then copy `main.js`, `manifest.json`, and `styles.css` into `<your-vault>/.obsid
 ## Usage
 
 - **Open the Ghost Connections sidebar**: click the brain icon in the ribbon, or run "Novyx: Show Ghost Connections sidebar" from the command palette.
-- **Remember a note**: open any markdown note and run "Novyx: Remember current note" from the command palette. The note is stored in your Novyx memory layer with tags for this vault and note basename.
+- **Remember a note**: open any markdown note and run "Novyx: Remember current note" from the command palette. The note is stored in your Novyx memory layer with tags for this vault and the note's file path (used as a stable identity key).
 - **Find connections**: as you switch between notes, the Ghost Connections sidebar updates automatically with semantically related memories. Click a result to open the source note, or click "Insert wiki-link" to add `[[Note Name]]` at your cursor position.
 
 ## Why this is different
