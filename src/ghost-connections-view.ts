@@ -110,7 +110,7 @@ export class GhostConnectionsView extends ItemView {
    */
   private buildQuery(title: string, body: string): string {
     const trimmedBody = body
-      .replace(/^---[\s\S]*?---/, "") // strip frontmatter
+      .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "") // strip YAML frontmatter (line-anchored fences)
       .trim()
       .slice(0, 1000);
     return `${title}\n\n${trimmedBody}`;

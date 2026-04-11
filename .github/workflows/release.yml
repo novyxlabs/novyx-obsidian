@@ -19,6 +19,17 @@ jobs:
         with:
           node-version: "22.x"
 
+      - name: Verify tag matches manifest version
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          manifest_version=$(node -p "require('./manifest.json').version")
+          if [ "$tag" != "$manifest_version" ]; then
+            echo "::error::Tag ($tag) does not match manifest.json version ($manifest_version)."
+            echo "Refusing to publish marketplace artifacts with mismatched metadata."
+            exit 1
+          fi
+          echo "Tag $tag matches manifest version. Proceeding."
+
       - name: Build plugin
         run: |
           npm ci

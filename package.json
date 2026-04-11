@@ -1,12 +1,11 @@
 {
   "name": "novyx-obsidian",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Persistent AI memory for Obsidian — powered by Novyx Core",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-    "version": "node version-bump.mjs && git add manifest.json versions.json"
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
   "repository": {
     "type": "git",

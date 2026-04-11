@@ -10,6 +10,18 @@ Your AI assistant forgets everything between sessions. Vector search plugins jus
 - **Remember current note** — A command that stores the active note in Novyx's persistent memory layer with a vault-scoped tag. Run it from the command palette or bind a shortcut.
 - **Works with your existing vault** — No migration, no lock-in. Your notes stay as plain markdown. Novyx runs alongside.
 
+## Data and privacy
+
+**This plugin sends note content to the Novyx API** ([novyxlabs.com](https://novyxlabs.com)) — that's how persistent memory and Ghost Connections work. You should know exactly what gets sent and when:
+
+- **"Remember current note" command** — Sends the **full body** of the active note (with YAML frontmatter stripped) to Novyx so it can be stored in your memory layer. Tagged with your vault name and the file path.
+- **Ghost Connections sidebar** — When you open or switch notes, sends the note's title plus the **first 1000 characters** of the body as a similarity-search query. Used only to find matching memories — not stored as a new memory.
+- **Settings sync** — Your API key and other settings are stored **locally** in Obsidian's plugin data folder. They're never sent anywhere except to authenticate API requests against Novyx.
+
+Notes are sent over HTTPS to your configured Novyx endpoint (default: `https://novyx-ram-api.fly.dev`). You can self-host Novyx Core to keep data on your own infrastructure — see the [Novyx Vault repo](https://github.com/novyxlabs/novyx-vault) for self-hosting details.
+
+If you need a fully offline second brain, this plugin is not the right fit. The whole point is the cross-session memory layer, which by definition lives outside your vault.
+
 ## Install
 
 ### From the Community Plugins marketplace (recommended, coming soon)
@@ -33,7 +45,7 @@ npm install
 npm run build
 ```
 
-Then copy `main.js`, `manifest.json`, and `styles.css` into `<your-vault>/.obsidian/plugins/novyx-obsidian/` and enable the plugin in Obsidian.
+Then copy `main.js`, `manifest.json`, and `styles.css` into `<your-vault>/.obsidian/plugins/novyx/` and enable the plugin in Obsidian. The folder name must match the plugin `id` from `manifest.json` (`novyx`).
 
 ## Setup
 
