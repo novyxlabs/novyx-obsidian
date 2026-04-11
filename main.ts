@@ -83,10 +83,9 @@ export default class NovyxPlugin extends Plugin {
 
     try {
       const raw = await this.app.vault.read(file);
-      // Strip YAML frontmatter so it doesn't pollute the embedding
       // Strip YAML frontmatter only if the file starts with one. Closing
-       // fence must be on its own line so we don't accidentally match a
-       // horizontal rule (---) inside the body.
+      // fence must be on its own line so we don't accidentally match a
+      // horizontal rule (---) inside the body.
       const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "").trim();
       const observation = `${file.basename}\n\n${body}`;
 
