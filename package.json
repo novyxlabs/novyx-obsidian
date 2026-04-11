@@ -1,11 +1,12 @@
 {
   "name": "novyx-obsidian",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Persistent AI memory for Obsidian — powered by Novyx Core",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+    "lint": "eslint main.ts settings.ts src/",
+    "build": "npm run lint && tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
   "repository": {
     "type": "git",
@@ -28,14 +29,19 @@
   },
   "homepage": "https://novyxlabs.com",
   "devDependencies": {
+    "@eslint/json": "^1.2.0",
     "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/utils": "^7.18.0",
     "builtin-modules": "^3.3.0",
     "esbuild": "^0.20.2",
+    "eslint": "^9.39.4",
+    "eslint-plugin-obsidianmd": "^0.1.9",
     "obsidian": "^1.5.0",
     "tslib": "^2.6.2",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "typescript-eslint": "^8.58.1"
   },
   "dependencies": {
     "novyx": "^3.2.0"

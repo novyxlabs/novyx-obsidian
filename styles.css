@@ -1,5 +1,26 @@
 /* Novyx Obsidian Plugin */
 
+/* --- Settings tab --- */
+
+.novyx-settings-link {
+  text-decoration: underline;
+}
+
+.novyx-privacy-disclosure {
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-left: 3px solid var(--text-accent);
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.novyx-privacy-list {
+  margin: 6px 0 0 0;
+  padding-left: 20px;
+}
+
+/* --- Ghost connections sidebar --- */
+
 .novyx-ghost-view {
   padding: 12px 14px;
   font-size: 13px;

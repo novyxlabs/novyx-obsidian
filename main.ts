@@ -17,7 +17,7 @@ export default class NovyxPlugin extends Plugin {
       (leaf: WorkspaceLeaf) => new GhostConnectionsView(leaf, this)
     );
 
-    this.addRibbonIcon("brain", "Novyx Ghost Connections", () => {
+    this.addRibbonIcon("brain", "Novyx ghost connections", () => {
       void this.activateGhostView();
     });
 
@@ -34,7 +34,7 @@ export default class NovyxPlugin extends Plugin {
 
     this.addCommand({
       id: "open-ghost-connections",
-      name: "Show Ghost Connections sidebar",
+      name: "Show ghost connections sidebar",
       callback: () => {
         void this.activateGhostView();
       },
@@ -61,7 +61,7 @@ export default class NovyxPlugin extends Plugin {
     } catch (err) {
       console.error("[Novyx] Failed to initialize client:", err);
       this.client = null;
-      new Notice("Novyx: Could not initialize client. Check your API key.");
+      new Notice("Novyx: could not initialize client. Check your API key.");
     }
   }
 
@@ -77,7 +77,7 @@ export default class NovyxPlugin extends Plugin {
 
   async rememberFile(file: TFile): Promise<void> {
     if (!this.client) {
-      new Notice("Novyx: Set your API key in plugin settings first.");
+      new Notice("Novyx: set your API key in plugin settings first.");
       return;
     }
 
@@ -103,7 +103,7 @@ export default class NovyxPlugin extends Plugin {
       new Notice(`Novyx: Remembered "${file.basename}"`);
     } catch (err) {
       console.error("[Novyx] Remember failed:", err);
-      new Notice("Novyx: Failed to save memory. Check the console for details.");
+      new Notice("Novyx: failed to save memory. Check the console for details.");
     }
   }
 
@@ -111,14 +111,14 @@ export default class NovyxPlugin extends Plugin {
     const { workspace } = this.app;
     const existing = workspace.getLeavesOfType(VIEW_TYPE_GHOST)[0];
     if (existing) {
-      workspace.revealLeaf(existing);
+      await workspace.revealLeaf(existing);
       return;
     }
 
     const leaf = workspace.getRightLeaf(false);
     if (!leaf) return;
     await leaf.setViewState({ type: VIEW_TYPE_GHOST, active: true });
-    workspace.revealLeaf(leaf);
+    await workspace.revealLeaf(leaf);
   }
 
   async loadSettings(): Promise<void> {

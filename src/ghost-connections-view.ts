@@ -19,7 +19,7 @@ export class GhostConnectionsView extends ItemView {
   }
 
   getDisplayText(): string {
-    return "Ghost Connections";
+    return "Ghost connections";
   }
 
   getIcon(): string {
@@ -123,7 +123,7 @@ export class GhostConnectionsView extends ItemView {
 
     // Header
     const header = container.createEl("div", { cls: "novyx-header" });
-    header.createEl("h4", { text: "Ghost Connections" });
+    header.createEl("h4", { text: "Ghost connections" });
     const refreshBtn = header.createEl("button", {
       cls: "novyx-refresh-btn",
       attr: { "aria-label": "Refresh" },
@@ -135,7 +135,7 @@ export class GhostConnectionsView extends ItemView {
     if (!this.plugin.client) {
       const notConfigured = container.createEl("div", { cls: "novyx-empty" });
       notConfigured.createEl("p", {
-        text: "Add your Novyx API key in plugin settings to see Ghost Connections.",
+        text: "Add your API key in plugin settings to see ghost connections.",
       });
       const link = notConfigured.createEl("a", {
         text: "Get a free API key →",
@@ -149,7 +149,7 @@ export class GhostConnectionsView extends ItemView {
     if (!this.currentFile) {
       container.createEl("p", {
         cls: "novyx-empty",
-        text: "Open a markdown note to see its Ghost Connections.",
+        text: "Open a Markdown note to see its ghost connections.",
       });
       return;
     }
@@ -181,7 +181,7 @@ export class GhostConnectionsView extends ItemView {
       empty.createEl("p", { text: "No ghost connections found yet." });
       empty.createEl("p", {
         cls: "novyx-hint",
-        text: "Try running \"Novyx: Remember current note\" on a few notes first, then reopen this one.",
+        text: "Try the remember current note command on a few notes first, then reopen this one.",
       });
       return;
     }
@@ -253,7 +253,7 @@ export class GhostConnectionsView extends ItemView {
   private insertWikiLink(file: TFile): void {
     const view = this.app.workspace.getActiveViewOfType(MarkdownView);
     if (!view) {
-      new Notice("Novyx: Open a note to insert a wiki-link.");
+      new Notice("Novyx: open a note to insert a wiki-link.");
       return;
     }
     // Use Obsidian's link generator so wiki-links respect vault settings

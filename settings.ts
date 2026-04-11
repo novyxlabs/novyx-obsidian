@@ -38,46 +38,41 @@ export class NovyxSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl("h2", { text: "Novyx" });
-
-    const intro = containerEl.createEl("p");
-    intro.addClass("setting-item-description");
+    // Intro paragraph — Obsidian shows the plugin name automatically above
+    // the settings tab, so we don't add our own h2.
+    const intro = containerEl.createEl("p", { cls: "setting-item-description" });
     intro.appendText("Persistent AI memory for your vault. ");
-    const link = intro.createEl("a", {
+    intro.createEl("a", {
       text: "Get a free API key at novyxlabs.com",
+      cls: "novyx-settings-link",
       attr: { href: "https://novyxlabs.com", target: "_blank", rel: "noopener" },
     });
-    link.setAttr("style", "text-decoration: underline");
     intro.appendText(".");
 
     // Privacy disclosure — required so users understand the data boundary
-    // before they paste an API key.
-    const privacy = containerEl.createEl("div", { cls: "setting-item-description" });
-    privacy.style.padding = "10px 12px";
-    privacy.style.marginBottom = "12px";
-    privacy.style.borderLeft = "3px solid var(--text-accent)";
-    privacy.style.background = "var(--background-secondary)";
-    privacy.style.borderRadius = "4px";
-    privacy.createEl("strong", { text: "What gets sent to Novyx" });
-    const list = privacy.createEl("ul");
-    list.style.margin = "6px 0 0 0";
-    list.style.paddingLeft = "20px";
+    // before they paste an API key. Styled via .novyx-privacy-disclosure
+    // in styles.css; using a CSS class lets themes override the look.
+    const privacy = containerEl.createEl("div", {
+      cls: "setting-item-description novyx-privacy-disclosure",
+    });
+    privacy.createEl("strong", { text: "What this plugin sends" });
+    const list = privacy.createEl("ul", { cls: "novyx-privacy-list" });
     list.createEl("li", {
-      text: "\"Remember current note\" sends the full note body (frontmatter stripped) to your Novyx API endpoint.",
+      text: "Saving a note via the remember command sends its full body (frontmatter stripped) to your configured API endpoint.",
     });
     list.createEl("li", {
-      text: "Ghost Connections sends the note title + first 1000 characters as a similarity query whenever you open or switch notes.",
+      text: "Ghost connections sends the note title plus the first 1000 characters as a similarity query whenever you open or switch notes.",
     });
     list.createEl("li", {
-      text: "Your API key is stored locally in Obsidian's plugin data — never sent anywhere except as the Authorization header.",
+      text: "Your API key is stored locally in Obsidian's plugin data — never sent anywhere except as the authorization header.",
     });
 
     new Setting(containerEl)
       .setName("Novyx API key")
-      .setDesc("Your Novyx API key. Stored locally in this vault's plugin settings.")
+      .setDesc("Your API key. Stored locally in this vault's plugin settings.")
       .addText((text) => {
         text
-          .setPlaceholder("nram_...")
+          .setPlaceholder("Paste your key (starts with nram_)")
           .setValue(this.plugin.settings.apiKey)
           .onChange((value) => {
             this.plugin.settings.apiKey = value.trim();
@@ -91,7 +86,7 @@ export class NovyxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("API URL")
-      .setDesc("Novyx Core API base URL. Change only if you're self-hosting.")
+      .setDesc("Base API URL. Change only if you're self-hosting.")
       .addText((text) =>
         text
           .setPlaceholder("https://novyx-ram-api.fly.dev")
@@ -105,7 +100,7 @@ export class NovyxSettingTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName("Vault tag")
       .setDesc(
-        "Tag applied to memories from this vault. Defaults to the vault name. Used to scope Ghost Connections so cross-vault noise doesn't leak in."
+        "Tag applied to memories from this vault. Defaults to the vault name. Used to scope ghost connections so cross-vault noise doesn't leak in."
       )
       .addText((text) =>
         text
@@ -117,7 +112,7 @@ export class NovyxSettingTab extends PluginSettingTab {
           })
       );
 
-    containerEl.createEl("h3", { text: "Ghost Connections" });
+    new Setting(containerEl).setName("Ghost connections").setHeading();
 
     new Setting(containerEl)
       .setName("Minimum similarity score")
